@@ -30,7 +30,6 @@ function emergency_password_reset_main()
             $results=$wpdb->get_results('SELECT ID FROM '.$wpdb->prefix.'users');
             if($results){foreach($results AS $row){emergency_password_reset($row->ID);}}
             echo '<h2>All done</h2><p>Please express your relief and appreciation with a coffee donation! <form class="right" action="https://www.paypal.com/cgi-bin/webscr" method="post"><input type="hidden" name="cmd" value="_s-xclick"><input type="hidden" name="hosted_button_id" value="R7YWSEHFXEU52"><input type="image"  src="https://www.paypal.com/en_GB/i/btn/btn_donate_LG.gif"  name="submit" alt="PayPal - The safer, easier way to pay online."><img alt=""  border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1"></form></p>';
-			
         }
 		else  if(!empty($_POST['admin_change']) && check_admin_referer('admin_change','admin_change'))
 		{
@@ -45,10 +44,10 @@ function emergency_password_reset_main()
             echo'<p><form action="" method="post">';
             echo wp_nonce_field('emergency_reset','emergency_reset');
             echo'<input type="hidden" name="emergency_accept" value="yes"/><input type="submit" class="button-primary" value="Reset all passwords"/></form></p>';
-			
+
         }
 		$sql='SELECT ID FROM '. $wpdb->users.' WHERE user_login="admin"';
-		
+
 		$admin=$wpdb->get_var($sql);
 		if(!empty($admin))
 			{
@@ -56,7 +55,6 @@ function emergency_password_reset_main()
 				echo'<p><form action="" method="post">';
 				echo wp_nonce_field('admin_change','admin_change');
 				echo'<input type="text" name="admin" placeholder="New admin username"/><input type="submit" value="Change admin username"/></form></p>';
-			
 			}
     }
     else{echo"<p>You don't have permission to use this password reset</p>";}
@@ -71,7 +69,7 @@ function emergency_password_reset($user_id)
         $user = get_userdata( $user_id );
         $reset_key = get_password_reset_key( $user );
     	$user_login = $user->user_login;
-    	$reset_link = '<a href="' . wp_login_url()."/?action=rp&key=$reset_key&login=" . rawurlencode($user_login) . '">reset your password</a>';
+    	$reset_link = '<a href="' . wp_login_url()."?action=rp&key=$reset_key&login=" . rawurlencode($user_login) . '">reset your password</a>';
 
         $message='<p>We have had to reset your password on '.site_url().'<br/>Your username is still '.$user->user_login.', please '.$reset_link.' (the link expires at midnight tonight!)<br/> Thanks.</p>';
         echo'<p>Password changed for '.$user->user_login.'</p>';
@@ -82,15 +80,12 @@ function emergency_password_reset($user_id)
 
 
 // Adding WordPress plugin action links
- 
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'emergency_password_reset_add_plugin_action_links' );
 function emergency_password_reset_add_plugin_action_links( $links ) {
- 
 	return array_merge(
 		array(
 			'settings' => '<a href="' . get_bloginfo( 'wpurl' ) . '/wp-admin/users.php?page=emergency_password_reset_main">Reset Passwords</a>'
 		),
 		$links
 	);
- 
 }
