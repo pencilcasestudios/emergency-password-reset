@@ -1,0 +1,17 @@
+{
+	"name": "pencilcasestudios/emergency-password-reset",
+	"description": "This plugin allows the admin to reset all the passwords and automatically email out the link to reset",
+	"homepage": "https://gitlab.com/pencilcasestudios/emergency-password-reset",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Silumesii Maboshe",
+			"email": "silumesii@pencilcasestudios.com",
+			"homepage": "http://pencilcasestudios.com"
+		}
+	],
+	"type": "wordpress-plugin",
+	"require": {
+		"php": ">=5.3.2"
+	}
+}
